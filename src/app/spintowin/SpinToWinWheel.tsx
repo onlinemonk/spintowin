@@ -81,32 +81,47 @@ export default function SpinToWinWheel() {
         break;
       }
     }
-    const extraSpins = 10;
+    // Use a time-based ease-out animation so the spin speed is predictable
+    const extraSpins = 6; // fewer full revolutions but slower overall feel
     const segmentAngle = 360 / prizes.length;
     const targetRotation =
       360 * extraSpins +
       (360 - (prizeIndex * segmentAngle + segmentAngle / 2)) -
       90;
 
-    let currentRotation = rotation;
-    let velocity = 40; // degrees per frame, initial speed
-    const deceleration = 0.25; // how quickly it slows down
+    // Cancel any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
 
-    function animate() {
-      if (velocity > 0.5) {
-        currentRotation += velocity;
-        velocity -= deceleration;
-        setRotation(currentRotation);
+    const startRotation = rotation;
+    const duration = 6000; // ms - total spin duration (6s)
+    const startTimeRef = { current: 0 } as { current: number };
+
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    function animate(timestamp: number) {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const elapsed = timestamp - startTimeRef.current;
+      const progress = Math.min(1, elapsed / duration);
+      const eased = easeOutCubic(progress);
+
+      const current = startRotation + (targetRotation - startRotation) * eased;
+      setRotation(current);
+
+      if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate);
       } else {
-        // Final snap to target
+        // ensure exact alignment at the end
         setRotation(targetRotation);
         setSpinning(false);
         setSelectedIndex(prizeIndex);
         animationRef.current = null;
       }
     }
-    animate();
+
+    animationRef.current = requestAnimationFrame(animate);
   };
 
   const handlePopupClose = () => {
