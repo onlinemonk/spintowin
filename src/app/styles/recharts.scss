@@ -1,0 +1,164 @@
+///recharts styles for EDS alignment
+.recharts-responsive-container {
+  height: 100%;
+
+  .recharts-wrapper {
+    //Adjust text colors
+    .recharts-surface {
+      text {
+        fill: #242424;
+        @at-root .dark & {
+          fill: #f2f2f2;
+        }
+      }
+    }
+  }
+}
+.recharts-legend-wrapper {
+  top: 0px !important;
+  .legend-wrapper-outer {
+    height: 38px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    .legend-wrapper-inner {
+      display: flex;
+    }
+  }
+}
+
+//TODO:: resume and move to component if specific
+.card {
+  .content {
+    .static-x-axis {
+      background: #ffffff !important;
+      @at-root .dark & {
+        background: #181818 !important;
+      }
+    }
+  }
+}
+
+//TODO:: resume and move to component if specific
+//For horizontal barchart with fixed x-axis at the bottom
+.horizontal-chart-with-custom-scroll {
+  overflow: auto;
+  position: relative;
+
+  .recharts-responsive-container {
+    &.with-custom-scroll {
+      margin-bottom: -30px;
+      .xAxis {
+        display: none;
+      }
+    }
+  }
+
+  .static-x-axis {
+    background-color: #fafafa;
+    @at-root .dark & {
+      background-color: #242424;
+    }
+    position: sticky;
+    bottom: 0px;
+    height: 40px;
+    width: 100%;
+    pointer-events: none;
+    .recharts-responsive-container {
+      min-height: 0px;
+    }
+
+    .recharts-cartesian-grid-vertical {
+      line {
+        //Renders crisp cartesian grid
+        shape-rendering: crispEdges;
+        stroke-dasharray: 1 2;
+        stroke: #242424;
+        @at-root .dark & {
+          stroke: #f2f2f2;
+        }
+      }
+    }
+  }
+}
+
+//TODO:: resume and move to component if specific
+.recharts-cartesian-grid-vertical,
+.recharts-cartesian-grid-horizontal {
+  line {
+    //Renders crisp cartesian grid
+    shape-rendering: crispEdges;
+    stroke-dasharray: 1 2;
+    stroke: #242424;
+    @at-root .dark & {
+      stroke: #f2f2f2;
+    }
+    &:first-child {
+      //Render last (bottom) line as solid line as per EDS
+      stroke-dasharray: none;
+      stroke: black;
+      shape-rendering: crispEdges;
+      @at-root .dark & {
+        stroke: white;
+      }
+    }
+  }
+}
+
+//TODO:: resume and move to component if specific
+.recharts-cartesian-grid-vertical {
+  line {
+    &:last-child {
+      stroke-opacity: 0;
+    }
+  }
+}
+
+//TODO:: resume and move to component if specific
+.recharts-tooltip-wrapper {
+  //Tweak to use eds styled tooltip!
+  z-index: 9998;
+  .chart-tooltip {
+    position: relative !important;
+    scrollbar-width: thin;
+    overflow-y: auto;
+    touch-action: auto;
+    pointer-events: auto;
+  }
+}
+
+//TODO:: resume and move to component if specific
+.recharts-brush {
+  rect:first-of-type {
+    stroke: transparent;
+    fill: #fafafa;
+    @at-root .dark & {
+      fill: #242424;
+    }
+  }
+}
+
+//TODO:: resume and move to component if specific
+Styles for brush ie slider .recharts-brush-slide {
+  stroke: #b1b1b1;
+  fill: #b1b1b1;
+  @at-root .dark & {
+    stroke: #4e4e4e;
+    fill: #4e4e4e;
+  }
+  fill-opacity: 1;
+  cursor: pointer !important;
+}
+.recharts-brush-traveller {
+  display: none;
+}
+.recharts-brush-texts {
+  display: none;
+}
+
+//TODO:: resume and move to component if specific
+.recharts-label-background {
+  @at-root .dark & {
+    fill: #181818;
+  }
+  fill: #f4f4f4;
+}

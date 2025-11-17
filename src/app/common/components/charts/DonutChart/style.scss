@@ -1,0 +1,19 @@
+.recharts-layer {
+  //Adds gaps to bar segements and donut segments
+  // .recharts-rectangle,
+  .recharts-sector {
+    stroke-width: 1.5;
+    stroke: #fafafa;
+    @at-root .dark & {
+      stroke: #242424;
+    }
+  }
+}
+
+.recharts-wrapper:focus {
+  outline: none;
+}
+
+svg:focus {
+  outline: none;
+}

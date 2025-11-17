@@ -1,0 +1,51 @@
+.tabNavWrapper {
+  background: #101828;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.tabNav {
+  display: flex;
+  gap: 0;
+  background: transparent;
+  border-radius: 8px;
+  border: 1px solid #2d3748;
+  overflow: hidden;
+}
+
+.tab {
+  color: #a0aec0;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 18px 48px 16px 48px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s;
+  position: relative;
+  border-right: 1px solid #2d3748;
+}
+
+.tab:last-child {
+  border-right: none;
+}
+
+.active {
+  color: #fff;
+  font-weight: 600;
+}
+
+.active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: #6366f1;
+  border-radius: 2px 2px 0 0;
+}
