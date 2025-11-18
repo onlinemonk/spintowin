@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import "./popup.scss";
 
@@ -8,44 +8,44 @@ const prizes = [
     label:
       "25% Off on next purchase i.e. Buy 3 get 1 Free. Any Bridgestone Tire",
     probability: 0.01,
-    color: "#e53935", // Red
-    iconUrl: "/25percent.png",
+    color: "#000000", // Red
+    iconUrl: "/25OFF.svg",
   },
   {
     label: "10% off on next purchase on any Bridgestone Tire",
-    probability: 0.16,
-    color: "#1e88e5", // Blue
-    iconUrl: "/10percent.png",
+    probability: 0.14,
+    color: "Red", // Blue
+    iconUrl: "/10OFF.svg",
   },
   {
     label: "Free wheel alignment at Dial-a-Tire",
     probability: 0.07,
     color: "#757575", // Grey
-    iconUrl: "/wheelAlignment.png",
+    iconUrl: "/wheelalignment.svg",
   },
   {
     label: "Free merchandise - Cap",
     probability: 0.12,
-    color: "#e53935", // Red
-    iconUrl: "/cap.png",
+    color: "#000000", // Red
+    iconUrl: "/cap.svg",
   },
   {
     label: "Free merchandise - Bottle",
     probability: 0.16,
-    color: "#1e88e5", // Blue
-    iconUrl: "/bottle.png",
+    color: "#e60012", // Blue
+    iconUrl: "/Bottle.svg",
   },
   {
     label: "Free merchandise - Car Wireless Charger",
     probability: 0.25,
     color: "#757575", // Grey
-    iconUrl: "/charger.png",
+    iconUrl: "/charger.svg",
   },
   {
     label: "Free merchandise - Bluetooth Speaker",
     probability: 0.25,
-    color: "#1e88e5", // Blue
-    iconUrl: "/bluetoothSpeaker.png",
+    color: "#e60012", // Blue
+    iconUrl: "/BluethoothSpeaker.svg",
   },
 ];
 
@@ -57,6 +57,8 @@ export default function SpinToWinWheel() {
   const [showPopup, setShowPopup] = useState(false);
   const [resetting, setResetting] = useState(false);
   const animationRef = React.useRef<number | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const prevSegmentRef = useRef<number | null>(null);
 
   useEffect(() => {
     Promise.resolve().then(() => setMounted(true));
@@ -110,6 +112,20 @@ export default function SpinToWinWheel() {
       const current = startRotation + (targetRotation - startRotation) * eased;
       setRotation(current);
 
+      // Play a tick when the wheel passes into a new segment
+      try {
+        const normalized = ((current % 360) + 360) % 360;
+        const segment = Math.floor(normalized / segmentAngle);
+        if (prevSegmentRef.current === null) {
+          prevSegmentRef.current = segment;
+        } else if (segment !== prevSegmentRef.current) {
+          prevSegmentRef.current = segment;
+          playTick();
+        }
+      } catch (e) {
+        // ignore any unexpected math errors
+      }
+
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate);
       } else {
@@ -121,8 +137,38 @@ export default function SpinToWinWheel() {
       }
     }
 
+    prevSegmentRef.current = null;
     animationRef.current = requestAnimationFrame(animate);
   };
+
+  // Play a short tick using the Web Audio API. Called on segment changes.
+  function playTick() {
+    try {
+      const ctx = (audioCtxRef.current ??= new (window.AudioContext || (window as any).webkitAudioContext)());
+      if (ctx.state === "suspended") {
+        // resume on user gesture (spin click)
+        ctx.resume().catch(() => {});
+      }
+
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "square";
+      o.frequency.value = 1200; // Hz
+      g.gain.value = 0.0001;
+      o.connect(g);
+      g.connect(ctx.destination);
+
+      const now = ctx.currentTime;
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(0.12, now + 0.001);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+
+      o.start(now);
+      o.stop(now + 0.09);
+    } catch (err) {
+      // If Audio API unavailable, silently ignore
+    }
+  }
 
   const handlePopupClose = () => {
     setResetting(true);
@@ -245,7 +291,7 @@ export default function SpinToWinWheel() {
                   }}
                 >
                   <Image
-                    src="/Bridgestone.png"
+                    src="/bspin.svg"
                     alt="Bridgestone Logo"
                     width={40}
                     height={40}

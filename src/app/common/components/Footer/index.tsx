@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <small>
-        &copy; {new Date().getFullYear()} Brand Name. All rights reserved.
+        &copy; {new Date().getFullYear()} Bridgestone. All rights reserved.
       </small>
     </footer>
   );
