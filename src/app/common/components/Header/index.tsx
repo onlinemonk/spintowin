@@ -3,7 +3,7 @@ import React from "react";
 const navLinks = [
   // { name: "Dashboard", href: "/dashboard", active: true },
   // { name: "Warranty Details", href: "/WarrantyDetails" },
-  { name: "Spin to Win", href: "/spintowin", active: true  },
+  // { name: "Spin to Win", href: "/spintowin", active: true  },
 ];
 
 const Header = () => {
@@ -21,7 +21,7 @@ const Header = () => {
       </div>
       {/* Nav Links */}
       <div className="ml-auto flex space-x-4">
-        {navLinks.map((link) => (
+        {/* {navLinks.map((link) => (
           <a
             key={link.name}
             href={link.href}
@@ -33,7 +33,7 @@ const Header = () => {
           >
             {link.name}
           </a>
-        ))}
+        ))} */}
       </div>
     </nav>
   );
