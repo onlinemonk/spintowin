@@ -27,7 +27,7 @@ const prizes = [
     label: "Free merchandise - Cap",
     probability: 0.12,
     color: "#000000", // Red
-    iconUrl: "/cap.svg",
+    iconUrl: "/Cap.svg",
   },
   {
     label: "Free merchandise - Bottle",
@@ -39,7 +39,7 @@ const prizes = [
     label: "Free merchandise - Car Wireless Charger",
     probability: 0.25,
     color: "#757575", // Grey
-    iconUrl: "/charger.svg",
+    iconUrl: "/Charger.svg",
   },
   {
     label: "Free merchandise - Bluetooth Speaker",
