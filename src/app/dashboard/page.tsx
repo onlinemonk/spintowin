@@ -173,13 +173,13 @@ const DashboardPage = () => {
       {/* Tab content */}
       {activeTab === "Summary" && (
         <div className="max-w-full mx-auto flex flex-row gap-8 justify-center items-center overflow-x-auto whitespace-nowrap pb-4">
-          <div>
+          {/* <div>
             <StatCard
               header="Total Warranty Records"
               value={data ? data.length : 0}
               color="text-green-600"
             />
-          </div>
+          </div> */}
           <div>
             <StatCard
               header="Unique Warranties"
